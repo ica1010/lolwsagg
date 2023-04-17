@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'content' %}
+{% include 'includes/nav_bar.html' %}
+<body>
+
+
+    <section id="hero">
+        <h4>Offre De Reprise. </h4>
+        <h2>Offres De Super Valeurs</h2>
+        <h1>Sur Tous Les Produits</h1>
+        <p> Économisez plus en coupon et jusqu'à 70% de !</p>
+        <button>Shop Now</button>
+    </section>
+
+    <section id="feature" class="section-p1">
+        {% for feature in features %}
+
+        <div class="fe-box">
+            <img src="{{feature.images.url}}" >
+            <h6>{{feature.feature_name}}</h6> 
+
+        </div>
+
+    {% endfor %}
+        </div>
+    </section>
+<!-- produit les plus vendue -->
+    <section id="product1" class="section-p1">
+        <h2>Produits Populaires</h2>
+        <p>Collection d'été Nouveau design</p>
+        <div class="pro-container">
+            {% for product in products %}
+            <div class="pro">
+                <img src="{{product.images.url}}" alt="{{product.slug}}">
+                <div class="des">
+                    <span>LOL SWAGG</span>
+                    <h5>{{product.Product_name}}</h5>
+                    <div class="rating-star">
+                        <span>
+                            <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            </span>
+                    </div>
+                    <h4>${{product.price}}</h4>
+                </div>
+                <a  href="{% url 'add_cart' product.id %}"><i class="bi bi-bag cart"></i></a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+    
+        <section id="banner" class="section-m1">
+            <h4 >Service de rétouche .</h4> 
+            <h2 >Jusqu'à <span> 70 % de réduction sur tout </span>t-shirts et accessoires .</h2>
+            <a href="#"><button class="normal">Explore me</button></a>
+        </section>
+<!-- autre models -->
+        <section id="product1" class="section-p1">
+            <h2>Autres Model</h2>
+            <p>Summer Collection New Mordem Design</p>
+            <div class="pro-container">
+                {% for product in otherproduct %}
+                <div class="pro">
+                    <img src="{{product.images.url}}" alt="{{product.slug}}">
+                    <div class="des">
+                        <span>LOL SWAGG</span>
+                        <h5>{{product.Product_name}}</h5>
+                        <div class="rating-star">
+                            <span>
+                                <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                </span>
+                        </div>
+                        <h4>${{product.price}}</h4>
+                    </div>
+                    <a  href="{% url 'add_cart' product.id %}"><i class="bi bi-bag cart"></i></a>
+                </div>
+                {% endfor %}
+    
+            </div>
+
+        </section>
+<!-- autre models end -->
+
+<!--     <section id="sm-banner" class="section-p1">
+        <div class="banner-box">
+            <h4>Offres folles</h4>
+            <h2>Bye 1 et obtenez 1 gratuits</h2>
+            <span>La meilleure  est en vente chez LOL SWAGG</span>
+            <button class="white">Learn More</button>
+        </div>
+        <div class="banner-box banner-box2 ">
+            <h4>Spring/summer</h4>
+            <h2>Upcomming season</h2>
+            <span>La meilleure  est en vente chez LOL SWAGG</span>
+            <button class="white">Collection</button>
+        </div>
+
+    </section> -->
+
+    <section id="banner3 ">
+            {% for banner in banners %}
+                <div class="card col-md-12" style="width:100%">
+                    <img src="{{banner.images.url}}"  class="card-img-top border-0" width="100%" height="cover">
+                    <div class="card-img-overlay">
+                      <div class="card-text container">
+                        <div class="row">
+                                <h2 class="text-center text-capitalize" style="color: #088178; font-weight: 800;">{{banner.banner_name}}</h2>
+                        </div>
+                        <div class="row">
+                            <h4 class="text-center px-5" style="color: whitesmoke;">{{banner.banner_text}}</h4>
+                        </div>
+                        <div class="row mt-5">
+                            <h3 class="text-center"><a href="{% url 'store'  %}"><button style="background-color: rgba(240, 248, 255, 0.144); border-color:transparent; font-size: 24px; font-weight: 800;" class="p-2" >Shop now</button></a></h3>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            {% endfor %} 
+    </section> 
+   
+
+<section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+        <h4>Sign up For Newsletters</h4>
+        <p>Get Emails update about our latest shop and <span>special offers.</span></p>
+    </div>
+    <div class="form">
+        <input type="text" placeholder="Votre address Email">
+        <button class="normal">Envoyer</button>
+    </div>
+</section>
+
+</body>
+{% include 'includes/footer.html' %}
+{% endblock %}
+
+
+</html>

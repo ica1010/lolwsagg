@@ -1,0 +1,84 @@
+{% load static %}
+<div class="col-lg-3 my-lg-0 my-md-1">
+    <div id="sidebar" class="bg-purple mb-3">
+        <a href="#demo" data-toggle="collapse"><div class="h4 text-white text-center">Account</div></a>
+        <ul id="demo" class="collapse">
+            <li class="{% if '/dashboard/' == request.path  %} active {% endif %}">
+                <a href="{% if '/dashboard/' == request.path  %}active{% endif %} {% url 'dashboard'  %}" class="text-decoration-none d-flex align-items-start">
+                    <div class="fas fa-box pt-2 me-3"></div>
+                    <div class="d-flex flex-column">
+                        <div class="link">My Account</div>
+                        <div class="link-desc">View recent your orders </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{% if '/my_orders/' == request.path  %}active{% endif %}{% url 'my_orders'  %}" class="text-decoration-none d-flex align-items-start">
+                    <div class="fas fa-box-open pt-2 me-3"></div>
+                    <div class="d-flex flex-column">
+                        <div class="link">My Orders</div>
+                        <div class="link-desc">View & Manage orders and returns</div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{% if '/edit_profile/' == request.path  %}active{% endif %}{% url 'edit_profile'  %}" class="text-decoration-none d-flex align-items-start">
+                    <div class="far fa-user pt-2 me-3"></div>
+                    <div class="d-flex flex-column">
+                        <div class="link">My Profile</div>
+                        <div class="link-desc">Change your profile details & password</div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'change_password' %}" class="text-decoration-none d-flex align-items-start">
+                    <div class="far fa-address-book pt-2 me-3"></div>
+                    <div class="d-flex flex-column">
+                        <div class="link">Change Passwords</div>
+                        <div class="link-desc">View & Manage Addresses</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="sidebar" class="bg-purple mb-3">
+        <a href="#demo2" data-toggle="collapse">
+            <div class="h4 text-white text-center">Shop</div>
+        </a>
+        <ul id="demo2" class="collapse">
+            <li class="{% if '/dashboard/' == request.path  %} active {% endif %}">
+                <a href="{% if '/store/' == request.path  %}active{% endif %} {% url 'store'  %}" class="text-decoration-none d-flex align-items-start">
+                    <div class="fas fa-store pt-2 me-3"></div>
+                    <div class="d-flex flex-column">
+                        <div class="link">Store</div>
+                        <div class="link-desc">Make Orders </div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{% if '/my_orders/' == request.path  %}active{% endif %}{% url 'cart'  %}" class="text-decoration-none d-flex align-items-start">
+                    <div class="fas fa-shopping-bag pt-2 me-3"></div>
+                    <div class="d-flex flex-column">
+                        <div class="link">My Cart <h3 style="text-align: end;"></h3></div>
+                        <div class="link-desc">{{cart_count}} Cart product</div>
+                        <div class="link-desc">View & Manage My Cart product</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <a href="{% url 'logout' %}" class="" style="text-decoration: none;">
+            <div class="" style="text-align: center;">
+                <h3 class="fas link fa-power-off pt-2 text-center" style="color: rgba(255, 0, 0, 0.863)"></h3>
+                <h5 class="link-desc text-center" style="color:red">Logout</h5>
+            </div>
+        </a>
+    </div>
+</div>
+
+<style>
+    li:hover, .active{
+        background-color: #085c56;
+    }
+</style>

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'content' %}
+
+{% if not cart_items %}
+<div class="container">
+    <div class="row mt-3">
+        <div class="col"><a href="{% url 'store'  %}">Continuer les achats</a></div>
+    </div>
+    <div class="row">
+        <div class="col"><img src="{% static 'img\emptycartitem.png' %}" alt="" width="80%"></div>
+    </div>
+</div>
+ {% else %}
+
+<body class="h-100 h-custom" style="background-color: #CECCCCF5;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="card">
+            <div class="card-body px-5">
+  
+              <div class="row">
+  
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col p-0">
+                            <p class="mb-3 text-start"><a href="{% url 'store' %}" class="text-body text-end" style="text-decoration: none;"><i
+                                class=""></i><i class="bi bi-arrow-left" style="color: black;"></i> Return</a></p>
+                        </div>
+                        <div class="col p-0 text-center ">
+                            <p class="text-center">total : {{total}} </p>
+                        </div>
+                        <div class="col p-0 "><p class="text-end"><a href="{% url 'checkout'  %}" style="text-decoration: none;color: black;">checkout  <i class="bi bi-arrow-right" style="color: black;"></i> </a></p></div>
+                    </div>
+
+                   
+                  <hr>
+  
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                      <p class="mb-1">Shopping cart</p>
+                      <p class="mb-0">You have {{cart_item_count}} items in your cart</p>
+                    </div>
+                  </div>
+                  {% for cart_item in cart_items %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <div class="">
+                                  <a href="{{cart_item.product.get_url}}" style="text-decoration: none;"><img src="{{cart_item.product.images.url}}" alt=""  class="img-fluid rounded-3"  style="width: 100px;"></a>
+                                </div>
+                                <div class="m-3">
+                                  <h5>{{cart_item.product.Product_name}}</h5>
+                                  <p class="small mb-0">  
+                                      {% if cart_item.variations.all %}
+                                          {% for item in cart_item.variations.all %}
+                                              {{item.variation_category |capfirst}}: {{ item.variation_value |capfirst}} <br>
+                                          {% endfor %}
+                                      {% endif %}</p>
+                                      <p>price : {{cart_item.product.price}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col">
+                                    <div class="d-flex flex-row align-items-center mb-3">
+                                        <div>
+                                          <h5 class="fw-normal mb-0"><input type="number" value="{{cart_item.quantity}}" style="width: 2rem; padding: 0; border: 0;background-color: white;" disabled></h5>  
+                                        </div>
+                                      <div class="mr-3">
+                                          <form action="{% url 'add_cart' cart_item.product.id  %}" method="POST">
+                                              {% csrf_token %}
+                                              {% for item in cart_item.variations.all %}
+                                                  <input type="hidden" name="{{item.variation_category | lower}}" value="{{item.variation_value | capfirst}}">
+                                              {% endfor %}
+                                              <button style="color: black; text-decoration: none; background-color: white; border: 0;" type="submit"><i class="bi bi-plus-lg"></i></button>
+                                          </form>
+                                         
+                                          
+                                          <a  href="{% url 'remove_cart' cart_item.product.id cart_item.id  %}" style="color: black;text-decoration: none; background-color: white; border: 0"><i class="bi bi-dash-lg"></i></a>
+                                      </div>
+                                        <div class="mx-2">
+                                          <h5 class="mx-3">{{cart_item.sub_total}}</h5>
+                                        </div>
+                                        <a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" onclick="return confirm('are you sure to delete this items ?')" style="color: #5A0D0D; text-decoration: none;padding-left:  20px;"><i class="bi bi-trash"></i></a>
+                                      </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    {% endfor %}
+
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+</bo>
+
+<style>
+@media (min-width:800000px) {
+.h-custom {
+height: 100vh !important;
+}
+}
+</style>
+{% endif %}
+{% endblock %}

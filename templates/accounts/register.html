@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% load django_bootstrap5 %}
+<style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    
+</style>
+  {% block 'content' %}
+
+  <body style="background-color: whitesmoke;">
+    <p class="text-center">
+      {% include 'includes/alerts.html' %}
+    </p>
+      <h4 class="text-end"></h4><a href="{% url 'home'  %}" style="text-decoration: 0;" class="m-3">Home</a></h4>
+    <div style=" display: flex; justify-content: center;background-color: whitesmoke;" class="mt-5 mb-2">  
+        <div class="card" width="100%" >
+          <div class="container" style="background-color: #f0ecec !important;border-radius: 0px;">
+
+            <form action="{% url 'register'  %}" method="post" >
+                <div class="cart-header">
+                    <h3 class="text-center  my-2 mb-3" style="font-weight: 600; color: #088178;" >
+                        REGISTRATION
+                    </h3>
+                    
+                    <hr>
+                </div>
+                {% csrf_token %}
+                <div class="row">
+                    <div class=" col mb-3 mt-3">
+                        <label for="first">first name:</label>
+                        {{form.first_name}}
+                    </div>
+    
+                    <div class=" col mb-3 mt-3">
+                        <label for="last_name">last name:</label>
+                        {{form.last_name}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label for="email">Email:</label>
+                        {{form.email}}
+                    </div>
+    
+                    <div class="col">
+                        <label for="phone">phone number:</label>
+                        {{form.phone_number}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col mb-3 mt-3">
+                        <label for="pwd">Password:</label>
+                      {{form.password}}
+                    </div>
+    
+                    <div class="col mb-3 mt-3">
+                        <label for="pwd">Password:</label>
+                      {{form.confirm_password}}
+                    </div>
+    
+                </div>
+                {{form.errors}}
+                <button type="submit" class=" normal mb-5" style="background-color: #088178; width: 100%;">register</button>
+            
+            </form>
+          </div>
+        
+        </div>
+    </div>
+
+    <div class="mb-5">
+            <p class="m-2 text-center">
+                you have an account ?<a href="{% url 'login'  %}"> login</a>
+            </p>
+      </div>
+  </body>
+  {% endblock %}
+
+
+
+
+
+
+
+
+  <script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+  </script>

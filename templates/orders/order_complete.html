@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'content' %}
+<section>
+    <div class="container my-4 ml-0 mr-0">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <p class="text-center"><img src="{% static 'PNG/check.webp' %}" width="50%" alt=""></p>
+                <h3 class="text-center" style="color:  #088178 ; font-weight: 800;">Payment Succesfull</h3>
+                <a href="{% url 'store'  %}" style="text-decoration: none; color: rgb(99, 99, 99);"><h5 class="text-center">Shop more <img src="{% static 'PNG/Forward_2.png' %}" alt="" width="4%"></h5></a>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8 col-xl-8 col-md-12">
+          <div class="card border-top border-bottom border-3" style="border-color:  #088178 !important;border-right:0px; border-left:0px; border-color:#088178; background-color: rgba(128, 128, 128, 0.247);">
+            <div class="card-body p-5 ">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-2 p-0">
+                                <img src="{% static 'img/loggo.jpg' %}" alt="" width="100%">
+                            </div>
+                            <div class="col-10">
+                                <p class="lead fw-bold mb-5" style="color:  #088178;">LolSwagg</p>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <div class="col-md-6">
+                        <p class="medium mb-1 text-end" style="font-weight: 800; color: black;">Ivoiced to</p>
+                        <p class="text-right text-end" > {{order.full_name}} </p>
+                        <p class="text-right text-end" >{{order.full_address}}</p>
+                        <p class="text-right text-end" >{{order.city}}, {{order.state}}</p>
+                        <p class="text-right text-end" >{{order.country}}</p>
+                    </div>
+                </div>
+              <div class="row mt-3">
+                <div class="col-md-12">
+                    <p class="medium mb-1 text-start" style="font-weight: 800; color: black;">Order: <span class="small text-muted mb-1 ">#{{order_number}} </span></p>
+                    <p class="medium mb-1 text-start" style="font-weight: 800; color: black;">Transaction ID: <span class="small text-muted mb-1 ">{{transID}} </span></p>
+                    <p class="medium mb-1 text-start" style="font-weight: 800; color: black;">Order Date: <span class="small text-muted mb-1 ">{{order.created_at}} </span></p>
+                    <p class="medium mb-1 text-start" style="font-weight: 800; color: black;">Status: <span class="small text-muted mb-1 ">{{order.status}} </span></p>
+              </div>
+  
+              <div class="mx-n5 px-5 py-4 mt-3" style="background-color: #f2f2f200;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="m-3">
+                              <h5>Produits</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3">
+                        <div class="row">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h5>Quantité</h5>
+                                          </div>
+                                          <div class="col-sm-6">
+                                              <h5>Total Price</h5>                      
+                                          </div>
+                                    </div>
+                                   
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                {% for item in cart_products %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex flex-row align-items-center mb-3">
+                            <div class="m-3">
+                              <h5>{{item.product.Product_name}}</h5>
+                              {% if item.variations.all %}
+                                    {% for i in item.variations.all %}
+                                          {{i.variation_category |capfirst}}: {{ i.variation_value |capfirst}} <br>
+                                    {% endfor %}
+                                {% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3">
+                        <div class="row">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h5 class="fw-normal mb-0"><input type="number" value="{{item.quantity}}" style="width: 2rem; padding: 0; border: 0;background-color: rgba(255, 255, 255, 0);" disabled></h5>  
+                                          </div>
+                                          <div class="col-sm-6">
+                                             <h5 style="background-color: #f2f2f200;">{{item.product.price}}</h5>
+                                          </div>
+                                    </div>
+                                   
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col-md-8 col-lg-9">
+                      <h4 class="mb-0">Shipping</h4>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                      <p class="mb-0"> {{total}}franc </p>
+                    </div>
+                  </div>
+
+                  <div class="row my-4">
+                    <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
+                      <p class="lead fw-bold mb-0" style="color:  #088178;">{{grand_total}}</p>
+                    </div>
+                  </div>
+
+              </div>
+  
+
+              <div class="row">
+                <div class="col-12">
+                    <h6 class="text-center" style="color: #088178;">Thank for your shopping with us</h3>
+                </div>
+              </div>
+              <p class="mt-2 pt-2 mb-0" style="font-size: 14px"> Want any help ?<a href="#!" style="color:  #088178;text-decoration: none;font-weight: 500;"> Please contact us</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}

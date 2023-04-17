@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'content' %}
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-8 mb-3">
+            <div class="container mb-2">
+                <div class="list-group">
+                  <h3 class="list-group-item list-group-item-action m-0 text-center">Billing Address</h3>
+                  <div class="list-group-item list-group-item-action" >
+                     <p class="m-0">{{order.full_name}}</p>
+                     <p class="m-0">{{order.full_address}}</p>
+                     <p class="m-0">{{order.city}}, {{order.state}} </p>
+                     <p class="m-0">{{order.country}}</p>
+                     <p class="m-0">{{order.email}}</p>
+                     <p class="m-0">{{order.phone}}</p>
+                     {% if order.order_note %}
+                        <b class="m-0">Order Note: </b>{{order.order_note}}
+                     {% endif %}
+                  </div>
+                </div>
+            </div>
+            <div class="container my-2">
+                <div class="list-group">
+                    <h3 class="list-group-item list-group-item-action m-0 text-center">Payment Method</h3>
+                  <a href="#" class="list-group-item list-group-item-action">PayPal</a>
+                  <a href="#" class="list-group-item list-group-item-action">mobile money</a>
+                </div>
+            </div>
+            <div class="container mt-2">
+                <div class="list-group">
+                  <h3 class="list-group-item list-group-item-action m-0 text-center">Products Reviews</h3>
+                  <div class="list-group-item list-group-item-action m-0">
+                    {% for cart_item in cart_items %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex flex-row align-items-center mb-3">
+                                <div class="">
+                                  <img src="{{cart_item.product.images.url}}" alt=""  class="img-fluid rounded-3"  style="width: 100px;">
+                                </div>
+                                <div class="m-3">
+                                  <h5>{{cart_item.product.Product_name}}</h5>
+                                  <p class="small mb-0">  
+                                      {% if cart_item.variations.all %}
+                                          {% for item in cart_item.variations.all %}
+                                              {{item.variation_category |capfirst}}: {{ item.variation_value |capfirst}} <br>
+                                          {% endfor %}
+                                      {% endif %}</p>
+                                      <p>price : {{cart_item.product.price}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="row">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p>Qte(s):</p>
+                                                <h5 class="fw-normal mb-0"><input type="number" value="{{cart_item.quantity}}" style="width: 2rem; padding: 0; border: 0;background-color: rgba(255, 255, 255, 0);" disabled></h5>  
+                                              </div>
+                                              <div class="col-sm-6">
+                                                  <p>Total Price:</p><h5>{{cart_item.sub_total}}</h5>
+                                              </div>
+                                        </div>
+                                       
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-4">
+                <div class="row mx-3">
+                      <div class="card">
+                        <div class="card-body px-3">
+                          <div class="row">
+                            <div class="col-md-12 p-0">  
+                                <div class="row">
+                                    <h4 class="text-center">Payments</h4>
+                                </div>       
+                              <hr>          
+                              <div class="container">
+                           
+                                <div class="row mb-2">
+                                    <div class="col-sm p-0" style="text-underline-offset: 5px; font-weight: 500; font-size: 14px;" ><u>Products Price</u>: <span style="float: right;">{{total}}</span></div>
+                                </div>                                
+                                <div class="row mb-4">
+                                    <div class="col-sm p-0" style="text-underline-offset: 5px; font-weight: 500;font-size: 14px;" ><u>Tax</u>: <span style="float: right;">{{tax}}</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm p-0"  style="text-underline-offset: 5px; font-weight: 500;font-size: 14px;"><u>Total</u>: <span style="float: right;">{{grand_total}}</span></div>
+                                </div>     
+                              </div>                       
+                            </div>
+                          </div>
+                        </div>
+                        <div id="smart-button-container">
+                          <div style="text-align: center;">
+                            <div id="paypal-button-container"></div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+        </div>
+        {{form.errors}}
+    </div>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=ARekHFrczPJ4e72QBL5IBKtPQa81nAlhMzKpoX22iLPDEcaifYYI8x-Rg3e5wMUCDIA51rEpIbX5Ajxf&currency=USD"></script>
+<script>
+
+	function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+	var amount = "{{ grand_total }}"
+	var url = "{% url 'payments' %}"
+	var csrftoken = getCookie('csrftoken');
+	var orderID = "{{order.order_number}}"
+	var payment_method = 'PayPal'
+	var redirect_url = "{% url 'order_complete' %}"
+	// Render the PayPal button into #paypal-button-container
+	paypal.Buttons({
+
+		style: {
+			color: 'blue',
+			shape: 'rect',
+			label: 'pay',
+			height: 40
+		},
+
+		// Set up the transaction
+		createOrder: function(data, actions) {
+			return actions.order.create({
+				purchase_units: [{
+					amount: {
+						value:amount,
+					}
+				}]
+			});
+		},
+
+		// Finalize the transaction
+		onApprove: function(data, actions) {
+			return actions.order.capture().then(function(details) {
+				// Show a success message to the buyer
+				console.log(details);
+				sendData();
+				function sendData(){
+					fetch(url, {
+						method : "POST",
+						headers: {
+							"Content-type": "application/json",
+							"X-CSRFToken": csrftoken,
+						},
+						body: JSON.stringify({
+							orderID: orderID,
+							transID: details.id,
+							payment_method: payment_method,
+							status: details.status,
+						}),
+					})
+				  .then((response) => response.json())
+				  .then((data) => {
+						window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
+					});
+				}
+			});
+		}
+
+
+	}).render('#paypal-button-container');
+</script>
+{% endblock %}

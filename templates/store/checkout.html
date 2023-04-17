@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'content' %}
+<div class="container">
+    <p class="text-center">
+        {% include 'includes/alerts.html' %}
+    </p>
+    <form action=" {% url 'place_order'%} " method="POST" >
+        {% csrf_token %}
+    <div class="row my-5">
+        <div class="col-md-6">
+            <div class="card" width="100%" style="border-color: #ffffff00;">
+                  <div class="container" style="background-color: #f0ecec !important;border-radius: 17px;">     
+                    
+                        <div class="cart-header">
+                            <h3 class="text-center my-2 mt-3" style="font-weight: 600; color: #088178;"  >
+                               INFORMATION COMPLETING
+                            </h3>
+                            <hr>
+                        </div>
+                     
+                        <div class="row">
+                            <div class=" col mb-3 mt-3">
+                                <label for="first_name">first name:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your first name" name="first_name">
+                            </div>
+            
+                            <div class=" col mb-3 mt-3">
+                                <label for="last_name">last name:</label>
+                                <input type="text"class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your last name" name="last_name">
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col">
+                                <label for="email">Email:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter email" name="email">
+                            </div>
+            
+                            <div class="col">
+                                <label for="phone">phone number:</label>
+                                <input type="number" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your phone number" name="phone">
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col mb-3 mt-3">
+                                <label for="address_line_1">Address Line 1:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your Address Line 1" name="address_line_1">
+                            </div>
+            
+                            <div class="col mb-3 mt-3">
+                                <label for="address_line_2">Addess Line 2:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your Addess Line 2" name="address_line_2">
+                            </div>
+            
+                        </div> 
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="city">City:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your City" name="city">
+                            </div>
+            
+                            <div class="col mb-3">
+                                <label for="state">State:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your State" name="state">
+                            </div>
+
+                            <div class="col mb-3">
+                                <label for="country">Country:</label>
+                                <input type="text" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="Enter your Country" name="country">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3 mt-3">
+                                <label for="order_note">Order note:</label>
+                                <textarea name="order_note" id="" cols="30" rows="2" class="form p-2" style="width: 100%; height: 60%; border-radius: 5px; border-color: rgba(0, 0, 0, 0);" placeholder="entrer for more inform us ..."></textarea>
+                            </div>
+                        </div> 
+                  </div>
+            </div>
+        </div> 
+        <div class="col-md-6">
+                <div class="row">
+                      <div class="card">
+                        <div class="card-body px-3">
+                          <div class="row">
+                            <div class="col-md-12">  
+                                <div class="row">
+                                    <p class="text-start col m-0">Shopping Cart</p>              
+                                    <p class="text-end col m-0">Total: {{total}} </p>        
+                                </div>       
+                              <hr>          
+                              {% for cart_item in cart_items %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex flex-row align-items-center mb-3">
+                                            <div class="">
+                                              <a href="{{cart_item.product.get_url}}" style="text-decoration: none;"><img src="{{cart_item.product.images.url}}" alt=""  class="img-fluid rounded-3"  style="width: 100px;"></a>
+                                            </div>
+                                            <div class="m-3">
+                                              <h5>{{cart_item.product.Product_name}}</h5>
+                                              <p class="small mb-0">  
+                                                  {% if cart_item.variations.all %}
+                                                      {% for item in cart_item.variations.all %}
+                                                          {{item.variation_category |capfirst}}: {{ item.variation_value |capfirst}} <br>
+                                                      {% endfor %}
+                                                  {% endif %}</p>
+                                                  <p>price : {{cart_item.product.price}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="row">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <p>Qte(s):</p>
+                                                            <h5 class="fw-normal mb-0"><input type="number" value="{{cart_item.quantity}}" style="width: 2rem; padding: 0; border: 0;background-color: white;" disabled></h5>  
+                                                          </div>
+                                                          <div class="col-sm-6">
+                                                              <p>Total Price:</p><h5>{{cart_item.sub_total}}</h5>
+                                                          </div>
+                                                    </div>
+                                                   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                                {% endfor %}
+            
+                              
+                            </div>
+                          </div>
+                        </div>
+                        <button type="submit" class="normal mb-2" style="background-color :#088178;">Place Order</button>
+                      </div>
+                </div>
+        </div>
+        {{form.errors}}
+    </div>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+{% load static %}
+{% include 'includes/nav_bar.html' %}
+<!-- <section id="page-header">
+    <h2>#Stayhome</h2>
+    <p>Save more in coupon & up to 70% of !</p>
+</section> -->
+<div style="padding-left: 2%;padding-right: 2%; padding-top: 5%;">
+    {% if products %}
+    {% if 'search' in request.path %}
+    <p><b style="color: #088178;"> {{product_count}} </b> Produit trouvé(s)</p>
+    {% else  %}
+    <p><b style="color: #088178;"> {{product_count}} </b> Produit au total </p>
+    {% endif %}
+    {% endif %}
+
+    
+</div>   
+<section id="product1" class="section-p1" style="padding-top: 0px;">
+    <div class="pro-container">
+        <!-- product start -->
+        {% if products %}
+        {% for product in products %}
+        <div class="pro" onclick="window.location.href='{{product.get_url}}';">
+        <img src="{{product.images.url}}" alt="{{product.slug}}"> 
+        <div class="des">
+            <span>{{product.category}}</span> 
+            <h5>{{product.Product_name}}</h5>
+            <div class="rating-star">
+                <span>
+                    <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    </span>
+            </div>
+            <h4>${{product.price}}</h4>
+        </div>
+        <a href="{% url 'add_cart' product.id %}"><i class="bi bi-bag cart"></i></a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <img src="{% static 'img\nofound.jpeg' %}" alt="" width="50%">
+        {% endif %}
+       
+        <!-- product end -->
+    </section>
+
+    {% if products.has_other_pages %}
+    <section id="pagination" class="section-p1">
+        {% if products.has_previous %}
+        <a href="?page={{products.previous_page_number}}"> <i class="bi bi-arrow-left"></i></a>
+        {% else %}
+        <a class="disabled" style="display: none;" ><i class="bi bi-arrow-left"></i></a>
+        {% endif %}
+        {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
+            <a href="#" class="avtive" style="background-color: #088178;">{{i}}</a>
+            {% else %}
+            <a href="?page={{i}}" class="avtive" style="background-color: #eff0f0; color: black;">{{i}}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+        <a href="?page={{products.next_page_number}}"><i class="bi bi-arrow-right"></i></a>
+        {% else %}
+        <a class="disabled" style="display: none;"><i class="bi bi-arrow-right"></i></a>
+        {% endif %}
+    </section>
+    {% endif %}
+<section id="newsletter" class="section-p1 section-m1">
+<div class="newstext">
+    <h4>Sign up For Newsletters</h4>
+    <p>Get Emails update about our latest shop and <span>special offers.</span></p>
+</div>
+<div class="form">
+    <input type="text" placeholder="Votre address Email">
+    <button class="normal">Envoyer</button>
+</div>
+</section>
+{% include 'includes/footer.html' %}
+
+{% endblock %}
